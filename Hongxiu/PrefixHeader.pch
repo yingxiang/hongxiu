@@ -1,0 +1,139 @@
+//
+//  PrefixHeader.pch
+//  Hongxiu
+//
+//  Created by xiang ying on 15/10/17.
+//  Copyright © 2015年 xiang ying. All rights reserved.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <Masonry/Masonry.h>
+#import <MJExtension/MJExtension.h>
+#import <MJRefresh/MJRefresh.h>
+
+#pragma mark - Property
+
+#define nonatomic_strong_readonly(__class__, __property__)\
+@property(nonatomic,strong,readonly)__class__   __property__;
+
+#define nonatomic_readonly(__class__, __property__)\
+@property(nonatomic,readonly)__class__   __property__;
+
+#define nonatomic_assign(__class__, __property__)\
+@property (nonatomic, assign)__class__  __property__;
+
+#define nonatomic_copy(__class__, __property__)\
+@property (nonatomic, copy)__class__  __property__;
+
+#define nonatomic_weak(__class__, __property__)\
+@property (nonatomic, weak)__class__    __property__;
+
+#define nonatomic_strong(__class__, __property__)\
+@property (nonatomic, strong) __class__ __property__;
+
+#pragma mark - Device
+
+#define _infoDictionary [[NSBundle mainBundle] infoDictionary]
+
+#define _appVersion _infoDictionary[@"CFBundleShortVersionString"]
+
+#define _sysVersion [[UIDevice currentDevice] systemVersion]
+
+#define _isIpad ([[UIDevice currentDevice] userInterfaceIdiom]==UIUserInterfaceIdiomPad)
+
+#define _ios6   ([_sysVersion floatValue] < 7.0)
+
+#pragma mark - Alloc
+
+#define _obj_alloc(__obj_class__) \
+[[__obj_class__ alloc]init];
+
+#define DECLARE_AS_SINGLETON(interfaceName)               \
++ (interfaceName*)shareInstance;                        \
+
+#define DECLARE_SINGLETON(className) \
+static className *singletonInstance = nil; \
++ (className *)shareInstance { \
+@synchronized (self) { \
+if (!singletonInstance) { \
+singletonInstance = [[self alloc] init]; \
+} \
+return singletonInstance; \
+} \
+} \
+
+#pragma mark - Directory
+
+#define _HYBIRD_PATH_LIBRARY    [NSHomeDirectory() stringByAppendingPathComponent:@"Library"]
+
+#define _HYBIRD_PATH_DOCUMENT    [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
+
+#define _HYBIRD_PATH_DATA [_HYBIRD_PATH_DOCUMENT stringByAppendingPathComponent:@"DATA"]
+
+#define _HYBIRD_PATH_IMAGE [_HYBIRD_PATH_DOCUMENT stringByAppendingPathComponent:@"IMAGES"]
+
+#pragma mark - Function
+
+#define SuppressPerformSelectorLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
+#define main_queue dispatch_get_main_queue()
+
+#define global_queue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+
+#define weakObject(self)  __weak typeof(self)weakSelf = self;
+
+#pragma mark - NSNotification
+
+
+#pragma mark -block
+
+typedef enum {
+    PROGRESS_TYPE_DEFAULT,
+    PROGRESS_TYPE_UPLOAD,       //上传进度
+    PROGRESS_TYPE_DOWNLOAD,     //下载进度
+    PROGRESS_TYPE_PLAYAUDIO,    //播放进度
+    PROGRESS_TYPE_RECORDER,      //录音进度
+    PROGRESS_TYPE_UNZIP,        //解压进度
+}PROGRESS_TYPE;
+//progresstype (downloadprogress、playaudioprogress、recoderprogres...)
+typedef void(^Block_progress)(PROGRESS_TYPE progresstype, long long currentprogress,long long totalprogress);
+
+typedef void(^Block_void)();
+
+typedef void(^Block_data)(id sender);
+
+typedef void(^Block_int)(NSInteger sender);
+
+typedef void(^Block_complete)(BOOL success, id sender);
+
+
+#define caseString(string1,string2) if([string1 isEqualToString:string2])
+
+#define toUrlString(url)  [[NSURL URLWithString:url] absoluteString]
+
+#import "fileEngine.h"
+#import "requestEngine.h"
+#import "utilEngine.h"
+#import "NBLoadingView.h"
+#import "UIColor+hex.h"
+#import "bookHistoryEngine.h"
+
+#define Back_Color [UIColor colorWithHexString:@"#F9DAAF"]
+
+extern void showTips(id message);
+
+#endif /* PrefixHeader_pch */
